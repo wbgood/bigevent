@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: bigevent-auth
+  profiles:
+    active: dev
