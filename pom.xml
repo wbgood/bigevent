@@ -11,6 +11,7 @@
     <modules>
         <module>event-auth</module>
         <module>event-common</module>
+        <module>event-gateway</module>
 
     </modules>
 
