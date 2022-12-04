@@ -1,0 +1,15 @@
+spring:
+  cloud:
+    # 使用 Naoos 作为服务注册发现
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+        group: BIGEVENT_AUTH_GROUP
+        file-extension: yml
+        sharedDataids: bigevent-common.yml
+        refreshable-dataids: bigevent-common.yml
+
+server:
+  port: 8781
