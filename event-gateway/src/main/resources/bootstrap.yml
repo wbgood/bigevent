@@ -2,4 +2,4 @@ spring:
   application:
     name: bigevent-gateway
   profiles:
-    active: dev
+    active: @profile.name@

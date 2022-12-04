@@ -117,4 +117,34 @@
         </repository>
     </repositories>
 
+    <build>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+
+            <properties>
+<!--                使用spring-boot-starter-parent自带版本8.0.16-->
+                <mysql.connector.version>${mysql.version}</mysql.connector.version>
+                <profile.name>dev</profile.name>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev2</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <mysql.connector.version>5.1.34</mysql.connector.version>
+                <profile.name>dev2</profile.name>
+            </properties>
+        </profile>
+    </profiles>
 </project>

@@ -10,6 +10,16 @@ spring:
         file-extension: yml
         sharedDataids: bigevent-common.yml
         refreshable-dataids: bigevent-common.yml
+        ext-config:
+#          指定配置中心配置文件名称
+          - dataId: bigevent-auth-dev.yml
+#            指定配置分组
+            group: BIGEVENT_AUTH_GROUP
+#            开启热更新
+            refresh: true
+
+
+
 
 server:
   port: 8781

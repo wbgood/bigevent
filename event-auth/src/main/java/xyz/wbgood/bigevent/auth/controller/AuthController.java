@@ -13,13 +13,13 @@ import xyz.wbgood.bigevent.common.utils.ResultCode;
 @RestController
 @RequestMapping("auth")
 @Api(tags = "用户认证api")
-@CrossOrigin
+
 public class AuthController {
 
     @PostMapping("reg/userName")
     @ApiOperation("用户名注册接口")
     @ApiImplicitParam(name = "regDto", value = "用户名注册信息", required = true)
-    public Result regUserName(RegDto regDto) {
-        return Result.ok(ResultCode.OK, "用户名注册成功!", null);
+    public Result regUserName(@RequestBody RegDto regDto) {
+        return Result.ok(ResultCode.OK, "用户名注册成功!", regDto);
     }
 }
