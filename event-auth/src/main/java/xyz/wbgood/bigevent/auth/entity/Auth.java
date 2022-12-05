@@ -26,7 +26,10 @@ import java.util.Date;
 public class Auth implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.INPUT)
+    public Auth() {
+
+    }
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
     private String id;
 
     private String userName;

@@ -26,4 +26,6 @@ public class BaseExceptionHandler {
         log.error(sw.toString());
         return Result.error(ResultCode.ERROR, "服务错误，请稍候再试");
     }
+
+
 }
