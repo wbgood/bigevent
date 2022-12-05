@@ -6,23 +6,30 @@ import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import xyz.wbgood.bigevent.auth.controller.BaseExceptionHandler;
 import xyz.wbgood.bigevent.auth.dto.RegDto;
 import xyz.wbgood.bigevent.auth.entity.Auth;
 import xyz.wbgood.bigevent.auth.mapper.AuthMapper;
 import xyz.wbgood.bigevent.auth.service.AuthService;
+import xyz.wbgood.bigevent.common.utils.JwtUtil;
 import xyz.wbgood.bigevent.common.utils.MacUtil;
 import xyz.wbgood.bigevent.common.utils.Result;
 import xyz.wbgood.bigevent.common.utils.ResultCode;
 
 import java.util.Date;
+import java.util.HashMap;
 
 @Service
 public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements AuthService {
 
     @Autowired
     private AuthMapper authMapper;
+
+    // jwt校验密钥
+    @Value("${jwt.secret}")
+    private String jwtSecret;
 
     /**
      * 用户名注册
@@ -55,6 +62,11 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
         return Result.ok(ResultCode.OK, "注册成功", null);
     }
 
+    /**
+     * 用户名登录
+     * @param regDto
+     * @return
+     */
     @Override
     public Result loginUserName(RegDto regDto) {
         //获取用户信息
@@ -68,12 +80,15 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
         // 用户存在比较密码
         String password = MacUtil.makeHashPassword(regDto.getPassword());
 
-        if (auth.getPassword() != password) {
+        if (!auth.getPassword().equals(password)) {
             return Result.error("密码错误");
         }
 
+        String token = JwtUtil.createJWT(auth.getId(), jwtSecret);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("token", token);
         // 用户存在 密码比对成功
-        return Result.ok(ResultCode.OK, "登陆成功", null);
+        return Result.ok(ResultCode.OK, "登陆成功",map);
     }
 
 

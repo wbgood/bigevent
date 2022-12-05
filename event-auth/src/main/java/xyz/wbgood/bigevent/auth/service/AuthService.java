@@ -15,5 +15,10 @@ public interface AuthService extends IService<Auth> {
      */
     Result regUserName(RegDto regDto);
 
+    /**
+     * 用户名dengl
+     * @param regDto
+     * @return
+     */
     Result loginUserName(RegDto regDto);
 }

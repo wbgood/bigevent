@@ -38,6 +38,15 @@ public class AuthFilter implements GlobalFilter, Ordered {
         //获取token，在请求头的Authorization属性中
         String token = exchange.getRequest().getHeaders().getFirst("Authorization");
 
+        //获取当前请求的url
+        String url = exchange.getRequest().getURI().getPath();
+        //有些接口不需要鉴权，但是希望能够获取用户登录的信息，可以进行用户行为分析等功能
+        //判断，是否是不需要鉴权的接口，不需要鉴权的接扣，鉴权失败也放行
+        if (excludedUrls.contains(url)) {
+            //不需要鉴权接口直接放行
+            return chain.filter(exchange);
+        }
+
         //对所有的接口都进行鉴权
         JwtUtil.VerifyResult verifyResult = JwtUtil.verifyJwt(token, secret);
         if (verifyResult.isValidate()) {
@@ -50,14 +59,6 @@ public class AuthFilter implements GlobalFilter, Ordered {
             return chain.filter(exchange);
         }
 
-        //获取当前请求的url
-        String url = exchange.getRequest().getURI().getPath();
-        //有些接口不需要鉴权，但是希望能够获取用户登录的信息，可以进行用户行为分析等功能
-        //判断，是否是不需要鉴权的接口，不需要鉴权的接扣，鉴权失败也放行
-        if (excludedUrls.contains(url)) {
-            //不需要鉴权接口直接放行
-            return chain.filter(exchange);
-        }
 
         ServerHttpResponse response = exchange.getResponse();
         //判断token是否为空，就是非法请求
