@@ -69,4 +69,9 @@ public class Auth implements Serializable {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastDate;
+
+    // 用户昵称
+    private String nickname;
+    // 用户头像
+    private String userPic;
 }

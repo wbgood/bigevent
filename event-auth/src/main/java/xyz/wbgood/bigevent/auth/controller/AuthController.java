@@ -35,4 +35,10 @@ public class AuthController {
     public Result loginUserName(@RequestBody RegDto regDto) {
         return authService.loginUserName(regDto);
     }
+
+    @GetMapping("my/getuserinfo")
+    @ApiOperation("查找用户详细信息")
+    public Result getUserinfo() {
+        return authService.getUserinfo();
+    }
 }

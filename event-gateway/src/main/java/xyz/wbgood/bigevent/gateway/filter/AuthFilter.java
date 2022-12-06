@@ -47,6 +47,17 @@ public class AuthFilter implements GlobalFilter, Ordered {
             return chain.filter(exchange);
         }
 
+        ServerHttpResponse response = exchange.getResponse();
+        //判断token是否为空，就是非法请求
+        // code 444 为此项目token鉴权失败专用
+        if (StringUtils.isBlank(token)) {
+            Map<String, Object> responseData = Maps.newHashMap();
+            responseData.put("code", 444);
+            responseData.put("msg", "非法请求，token为空");
+
+            return responseError(response, responseData);
+        }
+
         //对所有的接口都进行鉴权
         JwtUtil.VerifyResult verifyResult = JwtUtil.verifyJwt(token, secret);
         if (verifyResult.isValidate()) {
@@ -60,19 +71,11 @@ public class AuthFilter implements GlobalFilter, Ordered {
         }
 
 
-        ServerHttpResponse response = exchange.getResponse();
-        //判断token是否为空，就是非法请求
-        if (StringUtils.isBlank(token)) {
-            Map<String, Object> responseData = Maps.newHashMap();
-            responseData.put("code", 401);
-            responseData.put("msg", "非法请求，token为空");
 
-            return responseError(response, responseData);
-        }
 
         //鉴权失败，直接返回失败信息
         Map<String, Object> responseData = Maps.newHashMap();
-        responseData.put("code", 500);
+        responseData.put("code", 444);
         responseData.put("msg", verifyResult.getMsg());
 
         return responseError(response, responseData);

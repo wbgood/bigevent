@@ -18,6 +18,7 @@ import xyz.wbgood.bigevent.common.utils.MacUtil;
 import xyz.wbgood.bigevent.common.utils.Result;
 import xyz.wbgood.bigevent.common.utils.ResultCode;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -89,6 +90,24 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
         map.put("token", token);
         // 用户存在 密码比对成功
         return Result.ok(ResultCode.OK, "登陆成功",map);
+    }
+
+    @Autowired
+    private HttpServletRequest request;
+
+    /**
+     * 查找用户信息
+     *
+     * @return
+     */
+    @Override
+    public Result getUserinfo() {
+        String authId = request.getHeader("authId");
+        Auth auth = getById(authId);
+        // 用户不存在
+        if (auth == null) return Result.error(ResultCode.NOT_FOUND, "查找失败");
+
+        return Result.ok(ResultCode.OK, "查询成功", auth);
     }
 
 
