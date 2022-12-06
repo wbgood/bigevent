@@ -65,6 +65,7 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
 
     /**
      * 用户名登录
+     *
      * @param regDto
      * @return
      */
@@ -89,7 +90,7 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
         HashMap<String, String> map = new HashMap<>();
         map.put("token", token);
         // 用户存在 密码比对成功
-        return Result.ok(ResultCode.OK, "登陆成功",map);
+        return Result.ok(ResultCode.OK, "登陆成功", map);
     }
 
     @Autowired
@@ -108,6 +109,20 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
         if (auth == null) return Result.error(ResultCode.NOT_FOUND, "查找失败");
 
         return Result.ok(ResultCode.OK, "查询成功", auth);
+    }
+
+    @Override
+    public Result updateUserinfo(RegDto regDto) {
+        String authId = request.getHeader("authId");
+        Auth auth = Auth.builder()
+                .id(authId)
+                .nickname(regDto.getNickname())
+                .email(regDto.getEmail())
+                .build();
+        if (!updateById(auth)) {
+            return Result.error("更新失败");
+        }
+        return Result.ok("更新成功", null);
     }
 
 

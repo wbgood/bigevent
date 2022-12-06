@@ -37,7 +37,7 @@ public class Auth implements Serializable {
     @JsonIgnore
     private String password;
 
-    private int status;
+    private Integer status;
 
     private String mobile;
 

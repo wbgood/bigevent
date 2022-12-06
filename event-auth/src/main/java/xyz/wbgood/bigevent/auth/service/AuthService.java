@@ -27,4 +27,11 @@ public interface AuthService extends IService<Auth> {
      * @return
      */
     Result getUserinfo();
+
+    /**
+     * 更改用户信息
+     * @param regDto
+     * @return
+     */
+    Result updateUserinfo(RegDto regDto);
 }

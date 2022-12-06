@@ -89,4 +89,12 @@ public class RegDto implements Serializable {
     @ApiModelProperty(value = "验证码code")
     private String code;
 
+
+    // 用户昵称
+    @ApiModelProperty(value = "用户昵称")
+    private String nickname;
+    // 用户头像
+    @ApiModelProperty(value = "用户头像")
+    private String userPic;
+
 }

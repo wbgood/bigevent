@@ -41,4 +41,11 @@ public class AuthController {
     public Result getUserinfo() {
         return authService.getUserinfo();
     }
+
+    @PostMapping("/my/updateUserInfo")
+    @ApiOperation("更改用户信息")
+    @ApiImplicitParam(name = "regDta",value = "更改用户信息",required = true)
+    public Result updateUserinfo(@RequestBody RegDto regDto) {
+        return authService.updateUserinfo(regDto);
+    }
 }
