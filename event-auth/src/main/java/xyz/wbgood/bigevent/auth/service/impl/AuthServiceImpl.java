@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import xyz.wbgood.bigevent.auth.controller.BaseExceptionHandler;
 import xyz.wbgood.bigevent.auth.dto.RegDto;
+import xyz.wbgood.bigevent.auth.dto.UserInfoDto;
 import xyz.wbgood.bigevent.auth.entity.Auth;
 import xyz.wbgood.bigevent.auth.mapper.AuthMapper;
 import xyz.wbgood.bigevent.auth.service.AuthService;
@@ -112,13 +113,36 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
     }
 
     @Override
-    public Result updateUserinfo(RegDto regDto) {
+    public Result updateUserinfo(UserInfoDto userInfoDto) {
+        if (userInfoDto == null) return Result.error("修改数据不能为空");
+
         String authId = request.getHeader("authId");
-        Auth auth = Auth.builder()
-                .id(authId)
-                .nickname(regDto.getNickname())
-                .email(regDto.getEmail())
-                .build();
+        String newPassword = null;
+
+        //更新密码
+        if (StringUtils.isNotBlank(userInfoDto.getPassword())) {
+            //判断两次密码是否一致
+            if (!userInfoDto.getNewPassword().equals(userInfoDto.getCnewPassword())) {
+                return Result.error("两次密码不一致");
+            }
+            // 获取用户信息
+            Auth selectAuth = getById(authId);
+            // 加密原密码
+             newPassword = MacUtil.makeHashPassword(userInfoDto.getPassword());
+
+            // 判断原密码是否正确
+            if (!newPassword.equals(selectAuth.getPassword())) {
+                return Result.error("原密码错误");
+            }
+            // 加密原密码
+            newPassword = MacUtil.makeHashPassword(userInfoDto.getNewPassword());
+
+        }
+        Auth auth = new Auth();
+        BeanUtils.copyProperties(userInfoDto,auth);
+        auth.setPassword(newPassword);
+        auth.setId(authId);
+
         if (!updateById(auth)) {
             return Result.error("更新失败");
         }

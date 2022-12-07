@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import xyz.wbgood.bigevent.auth.dto.RegDto;
+import xyz.wbgood.bigevent.auth.dto.UserInfoDto;
 import xyz.wbgood.bigevent.auth.service.AuthService;
 import xyz.wbgood.bigevent.common.utils.Result;
 import xyz.wbgood.bigevent.common.utils.ResultCode;
@@ -45,7 +46,7 @@ public class AuthController {
     @PostMapping("/my/updateUserInfo")
     @ApiOperation("更改用户信息")
     @ApiImplicitParam(name = "regDta",value = "更改用户信息",required = true)
-    public Result updateUserinfo(@RequestBody RegDto regDto) {
-        return authService.updateUserinfo(regDto);
+    public Result updateUserinfo(@RequestBody UserInfoDto userInfoDto) {
+        return authService.updateUserinfo(userInfoDto);
     }
 }
